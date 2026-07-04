@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Alexander Moncayo Vallejo | Tarjeta de Presentación Digital</title>
+    
+    <!-- Tailwind CSS con configuración de colores personalizados -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        siscontri: {
+                            purple: '#5B21D6',
+                            purpleDark: '#2B0452',
+                            cyan: '#22D3EE',
+                            cyanDark: '#0891B2',
+                            slateBg: '#090D1A',
+                            white: '#FFFFFF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #070A13;
+            background-image: radial-gradient(circle at 50% 0%, #1a103c 0%, #070a13 100%);
+            overscroll-behavior-y: contain;
+        }
+        
+        .card-container {
+            width: 100%;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(9, 13, 26, 0.98) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (min-width: 450px) {
+            .card-container {
+                max-width: 420px;
+                margin: 2rem auto;
+                min-height: calc(100vh - 4rem);
+                border-radius: 32px;
+                border: 1px solid rgba(34, 211, 238, 0.2);
+                box-shadow: 0 0 40px rgba(91, 33, 214, 0.35), 
+                            0 0 80px rgba(34, 211, 238, 0.15);
+            }
+        }
+
+        .main-bg {
+            background: linear-gradient(135deg, #1e1b4b 0%, #31106a 50%, #1e3a8a 100%);
+            height: 170px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(9, 13, 26, 0.9) 0%, transparent 100%);
+        }
+
+        .neon-avatar-frame {
+            border: 2px solid rgba(34, 211, 238, 0.5);
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.3), inset 0 0 15px rgba(91, 33, 214, 0.3);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+        }
+
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border: 4px solid #090D1A;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #FFFFFF;
+            backdrop-filter: blur(12px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .social-btn:hover {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.15) 0%, rgba(91, 33, 214, 0.25) 100%);
+            border-color: rgba(34, 211, 238, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px -4px rgba(34, 211, 238, 0.3);
+        }
+
+        .ambient-floor-glow {
+            background: radial-gradient(circle, rgba(34, 211, 238, 0.3) 0%, rgba(91, 33, 214, 0.1) 50%, transparent 80%);
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140%;
+            height: 250px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.85;
+        }
+
+        /* Modals Glassmorphism */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(5, 8, 16, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: rgba(15, 18, 36, 0.95);
+            border-radius: 28px;
+            width: 100%;
+            max-width: 390px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transform: scale(0.9) translateY(30px);
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+            box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.8), 0 0 40px rgba(34, 211, 238, 0.15);
+            border: 1px solid rgba(34, 211, 238, 0.25);
+            opacity: 0;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+        }
+        .modal-header-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #22D3EE 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 0.95rem;
+            right: 0.95rem;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            border-radius: 99px;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .modal-close-btn:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #22D3EE;
+            transform: rotate(90deg);
+        }
+
+        /* Pulsación Botón Flotante */
+        .pulse-whatsapp {
+            animation: pulseCustom 2.5s infinite;
+        }
+        @keyframes pulseCustom {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+            70% { transform: scale(1.08); box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* Estilo de Barras de Desplazamiento */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(34, 211, 238, 0.3);
+            border-radius: 99px;
+        }
+    </style>
+</head>
+<body class="min-h-screen sm:flex sm:items-center sm:justify-center p-0 sm:py-6">
+
+    <!-- Sistema de Audio Sintetizado (Web Audio API) -->
+    <script>
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function playTapSound(frequency = 750, type = 'sine', duration = 0.08) {
+            try {
+                if (!audioCtx) audioCtx = new AudioCtx();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = type;
+                osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+                // Ramp down rápido para efecto tecnológico de "clic" limpio
+                osc.frequency.exponentialRampToValueAtTime(frequency / 3, audioCtx.currentTime + duration);
+                
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log("Audio contextual en espera del primer clic.");
+            }
+        }
+        
+        function playSuccessSound() {
+            playTapSound(580, 'sine', 0.1); 
+            setTimeout(() => playTapSound(880, 'sine', 0.12), 60); 
+        }
+
+        function playCloseSound() {
+            playTapSound(440, 'triangle', 0.12);
+        }
+    </script>
+
+    <!-- Contenedor Principal -->
+    <div class="card-container text-white">
+        
+        <!-- Banner Superior -->
+        <div class="main-bg"></div>
+        
+        <div class="px-5 pb-8 flex-grow -mt-24 z-10">
+            <div class="flex flex-col items-center text-center">
+                
+                <!-- Avatar de Perfil con Brillo Neon -->
+                <div class="neon-avatar-frame rounded-3xl p-3.5 mb-4 flex items-center justify-center bg-transparent">
+                    <div class="profile-pic rounded-full bg-slate-900 flex items-center justify-center overflow-hidden border-2 border-[#5B21D6]/40">
+                        <img src="https://i.postimg.cc/7P0gh3JV/Chat-GPT-Image-18-jun-2026-21-24-54.png" alt="Alexander Moncayo Vallejo" class="w-full h-full object-cover" style="object-position: center 25%;">
+                    </div>
+                </div>
+                
+                <!-- Datos Personales -->
+                <h1 class="text-2xl font-extrabold text-white tracking-tight w-full leading-snug">Alexander Moncayo Vallejo</h1>
+                
+                <!-- Horario de Atención en Vivo -->
+                <div class="flex flex-col items-center gap-2 mt-2">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold tracking-wide" id="live-status">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>
+                        🟢 Asesoría en Vivo
+                    </span>
+                    <p class="text-xs sm:text-sm text-cyan-300 font-semibold leading-relaxed">Especialista en Software Empresarial • POS • Contabilidad</p>
+                </div>
+                
+                <!-- Correo con acción directa -->
+                <a href="mailto:SiscontriPasto@gmail.com" onclick="playSuccessSound()" class="text-xs sm:text-sm text-slate-300 hover:text-cyan-300 transition-colors flex items-center justify-center gap-2 mt-3.5 w-full bg-white/5 py-2 px-4 rounded-xl border border-white/5">
+                    <i class="far fa-envelope text-cyan-400 text-sm"></i>
+                    <span>SiscontriPasto@gmail.com</span>
+                </a>
+                
+                <!-- Botones Principales de Contacto Directo -->
+                <div class="flex gap-4.5 w-full mt-6">
+                    <a href="https://wa.me/573172327374?text=Hola%20Alexander,%20vengo%20de%20tu%20tarjeta%20digital%20y%20me%20gustar%C3%ADa%20solicitar%20asesor%C3%ADa%20en%20software." onclick="playSuccessSound()" target="_blank" class="flex-grow flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-extrabold py-4 rounded-2xl text-base shadow-[0_4px_15px_rgba(16,185,129,0.3)] hover:brightness-110 transition-all text-center flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-lg"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                    <a href="tel:+573172327374" onclick="playTapSound(600)" class="flex-grow flex-1 bg-white/95 text-slate-950 font-extrabold py-4 rounded-2xl text-base shadow-[0_4px_15px_rgba(255,255,255,0.15)] hover:bg-white transition-all text-center flex items-center justify-center gap-2">
+                        <i class="fas fa-phone-alt text-sm"></i>
+                        <span>Llamar</span>
+                    </a>
+                </div>
+
+                <!-- Banner Web Inteligente Destacado -->
+                <div onclick="playTapSound(600); openModal('web-modal')" class="w-full mt-6 p-5 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-indigo-950/30 to-purple-950/40 border border-cyan-400/30 cursor-pointer hover:border-cyan-400 hover:scale-[1.01] transition-all duration-300 text-left shadow-lg group">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-cyan-400 text-slate-950 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform">
+                            <i class="fas fa-laptop text-xl animate-pulse"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white flex items-center gap-1.5">
+                                Web Inteligente + POS
+                                <i class="fas fa-chevron-right text-[10px] text-cyan-300 group-hover:translate-x-1 transition-transform"></i>
+                            </h4>
+                            <p class="text-[11px] text-slate-300 mt-1 leading-snug">E-commerce, inventario y ventas sincronizadas al instante con tu POS físico en un solo lugar.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid de Acciones con Sonido e Interactividad -->
+                <div class="grid grid-cols-3 gap-3 w-full mt-6">
+                    <div onclick="playTapSound(450); openModal('services-modal')" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-concierge-bell text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Servicios</span>
+                    </div>
+                    <div onclick="playTapSound(500); openModal('planes-modal')" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-tags text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Planes</span>
+                    </div>
+                    <div onclick="playTapSound(550); openModal('horario-modal')" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-clock text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Horario</span>
+                    </div>
+                    
+                    <a href="https://siscontria.shop/login" target="_blank" onclick="playTapSound(600)" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-mobile-alt text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Mi App</span>
+                    </a>
+                    <div onclick="playTapSound(650); openModal('qr-code-modal')" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-qrcode text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Código QR</span>
+                    </div>
+                    <div onclick="playTapSound(700); shareCard()" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-share-alt text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Compartir</span>
+                    </div>
+                    
+                    <div onclick="playTapSound(750); openModal('agendar-modal')" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-calendar-alt text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Agendar</span>
+                    </div>
+                    <div onclick="playTapSound(800); openModal('ubicacion-modal')" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-map-marker-alt text-xl text-cyan-400"></i>
+                        <span class="text-[9px] mt-1.5 font-bold text-center leading-tight">Pasto, Nariño<br>Colombia</span>
+                    </div>
+                    <a href="mailto:siscontripasto@gmail.com?subject=Consulta%20Software%20Empresarial" onclick="playSuccessSound()" class="social-btn flex flex-col justify-center items-center py-4 rounded-2xl">
+                        <i class="fas fa-envelope text-xl text-cyan-400"></i>
+                        <span class="text-[10px] mt-1.5 font-bold tracking-wide">Escribir</span>
+                    </a>
+                </div>
+
+                <!-- Guardar Contacto Directo -->
+                <button onclick="saveContact()" class="w-full mt-6 py-4 bg-transparent border-2 border-cyan-400/80 text-cyan-300 hover:bg-cyan-400 hover:text-slate-950 font-extrabold rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 relative z-10">
+                    <i class="fas fa-address-card text-lg"></i>
+                    <span>Descargar Contacto (vCard)</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Efecto de iluminación de fondo inferior -->
+        <div class="ambient-floor-glow"></div>
+        
+        <!-- Footer con Info -->
+        <div class="text-center py-4 px-4 bg-slate-950/70 text-xs text-slate-400 border-t border-white/5 relative z-10 flex items-center justify-center gap-1.5">
+            <span>⭐</span>
+            <span class="font-semibold text-slate-300">Más de 500 empresas automatizadas con éxito</span>
+        </div>
+    </div>
+
+    <!-- BOTÓN FLOTANTE PERMANENTE DE WHATSAPP -->
+    <a href="https://wa.me/573172327374?text=Hola%20Alexander,%20vengo%20de%20tu%20tarjeta%20digital%20y%20me%20gustar%C3%ADa%20hacer%20una%20consulta%20técnica." target="_blank" onclick="playSuccessSound()" class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4.5 rounded-full shadow-2xl pulse-whatsapp border-2 border-white/10 flex items-center justify-center">
+        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.296-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
+
+    <!-- TOAST NOTIFICATIONS (Reemplazo moderno de alerts) -->
+    <div id="toast-container" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[1100] pointer-events-none flex flex-col space-y-2 w-11/12 max-w-[340px]"></div>
+
+    <!-- MODAL 1: SERVICIOS -->
+    <div id="services-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Nuestros Servicios</h2>
+                <button onclick="playCloseSound()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <div class="space-y-4">
+                    <div class="p-3 bg-white/5 rounded-xl border border-cyan-400/20 hover:border-cyan-400/40 transition-colors">
+                        <h3 class="font-bold text-cyan-300 text-sm">Páginas Web Inteligentes + POS</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">Sincronización automática de inventario, pasarela de pagos integrada y control de ventas físicas y online en un solo panel de mandos.</p>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-cyan-400/20 hover:border-cyan-400/40 transition-colors">
+                        <h3 class="font-bold text-cyan-300 text-sm">Módulo Gastro / Bar & Restaurantes</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">Mapas interactivos de mesas, comandas digitales inalámbricas, control de recetas y comandas para múltiples impresoras de cocina.</p>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-cyan-400/20 hover:border-cyan-400/40 transition-colors">
+                        <h3 class="font-bold text-cyan-300 text-sm">Módulo de Reparaciones Técnicas</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">Control estricto de órdenes de taller, bitácoras de servicio de equipos, control de repuestos específicos y estados de garantía.</p>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-cyan-400/20 hover:border-cyan-400/40 transition-colors">
+                        <h3 class="font-bold text-cyan-300 text-sm">Módulo Contable Completo</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">Contabilidad integrada, emisión automática de balances contables, libros mayores e informes tributarios en formato digital.</p>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                        <h3 class="font-bold text-purple-300 text-sm">Facturación Electrónica DIAN</h3>
+                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">Emisión y transmisión instantánea a la DIAN de Facturas Electrónicas, Notas Crédito y Débito de forma transparente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: PLANES -->
+    <div id="planes-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Nuestros Planes</h2>
+                <button onclick="playCloseSound()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <div class="space-y-4 text-left">
+                    <div class="p-4 bg-gradient-to-br from-cyan-950/40 to-slate-900 border-2 border-cyan-400/60 rounded-2xl">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-extrabold text-cyan-300">FACTURA FÁCIL</h3>
+                            <span class="text-[9px] bg-cyan-400/20 text-cyan-300 px-2 py-0.5 rounded-full font-bold">DIAN</span>
+                        </div>
+                        <div class="text-xl font-black text-white mt-1.5">$450.000 <span class="text-xs font-normal text-slate-400">/ Año</span></div>
+                        <ul class="text-[11px] text-slate-300 mt-2 list-disc pl-4 space-y-1">
+                            <li>Facturación electrónica ilimitada</li>
+                            <li>Certificado digital DIAN incluido</li>
+                            <li>Soporte técnico preferencial</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-gradient-to-br from-purple-950/40 to-slate-900 border-2 border-purple-400/60 rounded-2xl">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-extrabold text-purple-300">POS EMPRENDEDOR</h3>
+                            <span class="text-[9px] bg-purple-400/20 text-purple-300 px-2 py-0.5 rounded-full font-bold">Popular</span>
+                        </div>
+                        <div class="text-xl font-black text-white mt-1.5">$950.000 <span class="text-xs font-normal text-slate-400">/ Año</span></div>
+                        <ul class="text-[11px] text-slate-300 mt-2 list-disc pl-4 space-y-1">
+                            <li>Software de Inventario y Caja POS</li>
+                            <li>Emisión ilimitada DIAN</li>
+                            <li>Control exacto de inventarios</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-gradient-to-br from-indigo-950/40 to-slate-900 border border-white/10 rounded-2xl">
+                        <h3 class="text-sm font-extrabold text-indigo-300">POS EMPRESARIAL</h3>
+                        <div class="text-xl font-black text-white mt-1.5">$1.500.000 <span class="text-xs font-normal text-slate-400">/ Año</span></div>
+                        <ul class="text-[11px] text-slate-300 mt-2 list-disc pl-4 space-y-1">
+                            <li>Todo lo del plan Emprendedor</li>
+                            <li>Módulo contable avanzado integrado</li>
+                            <li>Documentos soporte de nómina</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: HORARIO -->
+    <div id="horario-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Horario de Atención</h2>
+                <button onclick="playCloseSound()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="space-y-4 text-slate-200 text-sm">
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <span class="font-bold flex items-center gap-3"><i class="far fa-calendar-alt w-5 text-cyan-400 text-base"></i>Lunes a Viernes</span>
+                        <span class="font-mono bg-cyan-400/10 border border-cyan-400/30 px-2.5 py-1 rounded text-xs text-cyan-300 font-semibold">08:00 AM - 07:00 PM</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/5 pb-3">
+                        <span class="font-bold flex items-center gap-3"><i class="far fa-calendar w-5 text-cyan-400 text-base"></i>Sábados</span>
+                        <span class="font-mono bg-cyan-400/10 border border-cyan-400/30 px-2.5 py-1 rounded text-xs text-cyan-300 font-semibold">08:00 AM - 02:00 PM</span>
+                    </div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 text-xs text-slate-400 text-center leading-relaxed">
+                        ⚠️ No laboramos días domingos ni festivos nacionales en Colombia.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL 4: QR CODE -->
+    <div id="qr-code-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Escanea la Tarjeta</h2>
+                <button onclick="playCloseSound()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body text-center flex flex-col items-center">
+                <p class="text-slate-300 mb-4 text-xs">Comparte mi tarjeta fácilmente apuntando con la cámara de tu móvil:</p>
+                <div class="flex justify-center p-3.5 bg-white rounded-3xl max-w-[210px] mx-auto shadow-2xl border-4 border-cyan-400">
+                     <img id="qrImg" src="https://placehold.co/200x200/FFFFFF/5B21D6?text=Cargando..." 
+                          alt="Código QR" 
+                          class="rounded-xl w-44 h-44">
+                </div>
+                <p class="text-[10px] text-slate-400 mt-3">Generado para agilizar el guardado de datos comerciales.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: WEB DETALLE -->
+    <div id="web-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Web Inteligente + POS</h2>
+                <button onclick="playCloseSound()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body text-slate-300 text-sm space-y-3 leading-relaxed">
+                <p>Nuestra solución estrella integra tu tienda en línea de forma nativa con tu inventario de tienda física.</p>
+                <div class="p-3 bg-cyan-400/5 rounded-xl border border-cyan-400/30 text-xs space-y-2">
+                    <p class="flex items-start gap-2"><b class="text-cyan-300 shrink-0">✔ Sincronización Real:</b> Si vendes algo online, se descuenta de tu caja física y viceversa.</p>
+                    <p class="flex items-start gap-2"><b class="text-cyan-300 shrink-0">✔ Enlace DIAN:</b> Genera comprobantes electrónicos instantáneos en cada compra digital.</p>
+                </div>
+                <button onclick="playSuccessSound(); requestWebConsultation()" class="w-full mt-3 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl text-xs shadow-md">
+                    Consultar Integración por WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 6: AGENDAR CITA INTERACTIVA -->
+    <div id="agendar-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Agendar Asesoría Técnica</h2>
+                <button onclick="playCloseSound()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body custom-scrollbar">
+                <p id="calendar-instruction" class="text-slate-300 text-xs mb-3 text-center leading-relaxed">Selecciona el día que más te convenga del calendario:</p>
+                
+                <!-- Calendario Cyberpunk -->
+                <div id="calendar-widget" class="bg-slate-900/60 p-4 rounded-2xl border border-purple-500/30 mb-4">
+                    <div id="calendar-header" class="flex justify-between items-center mb-3">
+                        <button onclick="playTapSound(400); changeMonth(-1)" class="text-cyan-400 p-2"><i class="fas fa-chevron-left"></i></button>
+                        <h3 id="calendar-month-year" class="text-white font-bold text-sm"></h3>
+                        <button onclick="playTapSound(400); changeMonth(1)" class="text-cyan-400 p-2"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-[11px] font-semibold text-slate-300"></div>
+                </div>
+
+                <!-- Selector de Horas -->
+                <div id="time-selector" class="hidden mb-4 space-y-3">
+                    <label class="block text-cyan-300 text-xs font-bold uppercase tracking-wider">Selecciona la hora de la llamada:</label>
+                    <select id="time-picker" class="w-full bg-slate-950 text-white p-3 rounded-xl border border-cyan-400/40 focus:border-cyan-400 outline-none text-xs">
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="03:00 PM">03:00 PM</option>
+                        <option value="04:00 PM">04:00 PM</option>
+                        <option value="05:00 PM">05:00 PM</option>
+                    </select>
+                    <button id="confirm-appointment-btn" class="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-3.5 rounded-xl font-bold hover:bg-green-500 transition shadow-lg text-xs">
+                        <i class="fab fa-whatsapp text-base"></i> Confirmar Asesoría
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL 7: UBICACIÓN -->
+    <div id="ubicacion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-header-title">Ubicación de Oficina</h2>
+                <button onclick="playCloseSound()" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body text-center space-y-4">
+                <div class="p-4 bg-white/5 rounded-2xl border border-cyan-400/30">
+                    <i class="fas fa-map-marker-alt text-3xl text-cyan-400 mb-3 animate-bounce"></i>
+                    <h3 class="font-bold text-white text-base">Pasto, Nariño</h3>
+                    <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">Soporte directo a empresas del Suroccidente Colombiano.</p>
+                </div>
+                <a href="https://maps.app.goo.gl/2RVZu9Y82qSaFeHZ7" target="_blank" onclick="playSuccessSound()" class="w-full block py-3 bg-cyan-500 text-slate-950 text-xs font-bold rounded-xl shadow-md">
+                    Abrir en Google Maps
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS DE CONTROL -->
+    <script>
+        // --- 1. Control del Horario Comercial en Colombia (UTC-5) ---
+        function updateLiveStatus() {
+            const statusBadge = document.getElementById('live-status');
+            
+            const bogotaTime = new Date().toLocaleString("en-US", {timeZone: "America/Bogota"});
+            const localDate = new Date(bogotaTime);
+            
+            const hours = localDate.getHours();
+            const minutes = localDate.getMinutes();
+            const day = localDate.getDay(); 
+            
+            let isOpen = false;
+            let currentSchedule = "08:00 AM - 07:00 PM";
+            
+            if (day >= 1 && day <= 5) { // Lunes a Viernes
+                if (hours >= 8 && hours < 19) {
+                    isOpen = true;
+                }
+            } else if (day === 6) { // Sábado
+                currentSchedule = "08:00 AM - 02:00 PM";
+                if (hours >= 8 && hours < 14) {
+                    isOpen = true;
+                }
+            }
+            
+            if (isOpen) {
+                statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>🟢 Abierto para asesoría (${currentSchedule})`;
+                statusBadge.className = "inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold tracking-wide bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+            } else {
+                statusBadge.innerHTML = `🔴 Fuera de horario (Abre: ${currentSchedule})`;
+                statusBadge.className = "inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold tracking-wide bg-rose-500/10 text-rose-400 border border-rose-500/20";
+            }
+        }
+        updateLiveStatus();
+        setInterval(updateLiveStatus, 60000); // Actualizar cada minuto
+
+        // --- 2. Sistema de Notificaciones Flotantes (Toasts) ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgClass = type === 'success' ? 'bg-cyan-950/95 border-cyan-500' : 'bg-rose-950/95 border-rose-500';
+            const icon = type === 'success' 
+                ? '<i class="fas fa-check-circle text-cyan-400"></i>' 
+                : '<i class="fas fa-exclamation-circle text-rose-400"></i>';
+            
+            toast.className = `px-4 py-3 rounded-xl border text-white text-xs font-semibold shadow-2xl transition-all duration-300 translate-y-4 opacity-0 flex items-center gap-2.5 ${bgClass}`;
+            toast.innerHTML = `${icon}<span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => { toast.classList.remove('translate-y-4', 'opacity-0'); }, 10);
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // --- 3. Control de Modales ---
+        const openModal = (id) => {
+            const m = document.getElementById(id);
+            if (m) m.classList.add('active');
+            
+            // Generar dinámicamente QR si es el modal de QR
+            if (id === 'qr-code-modal') {
+                const url = window.location.href;
+                document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}`;
+            }
+        };
+
+        const setupModalEvents = (triggerId, modalId) => {
+            const modal = document.getElementById(modalId);
+            if(modal) {
+                modal.querySelector('.modal-close-btn').addEventListener('click', () => modal.classList.remove('active'));
+                modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+            }
+        };
+        
+        setupModalEvents(null, 'planes-modal');
+        setupModalEvents(null, 'services-modal');
+        setupModalEvents(null, 'horario-modal');
+        setupModalEvents(null, 'qr-code-modal');
+        setupModalEvents(null, 'agendar-modal');
+        setupModalEvents(null, 'ubicacion-modal');
+        setupModalEvents(null, 'web-modal');
+
+        // --- 4. Compartir Tarjeta ---
+        function shareCard() {
+            playSuccessSound();
+            const shareData = { 
+                title: 'Alexander Moncayo Vallejo | Tarjeta Digital', 
+                text: 'Te comparto el contacto de Alexander Moncayo (Soporte y Software POS).', 
+                url: window.location.href 
+            };
+            
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {});
+            } else {
+                // Fallback de copiado al portapapeles
+                const tempInput = document.createElement("textarea");
+                tempInput.value = window.location.href;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('¡Enlace de tarjeta copiado al portapapeles!');
+                } catch(err) {
+                    showToast('Ocurrió un error al intentar copiar.', 'error');
+                }
+                document.body.removeChild(tempInput);
+            }
+        }
+
+        // --- 5. Descargar Contacto VCF ---
+        function saveContact() {
+            playSuccessSound();
+            const vCard = "BEGIN:VCARD\nVERSION:3.0\nFN:Alexander Moncayo Vallejo\nORG:SISCONTRI - Software POS\nTEL;TYPE=WORK,CELL:+573172327374\nEMAIL:siscontripasto@gmail.com\nNOTE:Especialista en Software Empresarial, POS y Contabilidad\nEND:VCARD";
+            const blob = new Blob([vCard], { type: "text/vcard" });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = "Alexander_Moncayo_SISCONTRI.vcf";
+            link.click();
+            showToast('Contacto descargado listo para guardar.');
+        }
+
+        // --- 6. Consulta de Software Web ---
+        function requestWebConsultation() {
+            const message = "Hola Alexander, acabo de ver la sección 'Web Inteligente + POS' en tu tarjeta digital y me gustaría recibir una asesoría para mi negocio.";
+            window.open(`https://wa.me/573172327374?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // --- 7. Calendario Dinámico Mejorado ---
+        let currentCalendarDate = new Date();
+        let selectedDateStr = "";
+
+        function renderCalendar() {
+            const monthYear = document.getElementById('calendar-month-year');
+            const grid = document.getElementById('calendar-grid');
+            const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+            grid.innerHTML = days.map(d => `<div class="text-[#22D3EE] font-bold py-1.5 uppercase text-[9px] tracking-wider">${d}</div>`).join('');
+            
+            const month = currentCalendarDate.getMonth();
+            const year = currentCalendarDate.getFullYear();
+            
+            monthYear.innerText = currentCalendarDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }).toUpperCase();
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const adjustedFirstDay = (firstDay === 0 ? 6 : firstDay - 1);
+            
+            for (let i = 0; i < adjustedFirstDay; i++) {
+                grid.innerHTML += '<div></div>';
+            }
+            
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateStr = `${d}/${month + 1}/${year}`;
+                const btn = document.createElement('div');
+                btn.className = "py-1.5 rounded-lg cursor-pointer hover:bg-[#22D3EE]/20 hover:text-[#22D3EE] text-white font-semibold transition border border-transparent";
+                btn.innerText = d;
+                
+                btn.onclick = () => {
+                    playTapSound(650);
+                    selectedDateStr = dateStr;
+                    document.getElementById('time-selector').classList.remove('hidden');
+                    document.getElementById('calendar-instruction').innerHTML = `📅 Fecha: <b class="text-[#22D3EE]">${dateStr}</b>. Ahora selecciona el mejor horario:`;
+                    
+                    // Resaltar el botón activo
+                    Array.from(grid.children).forEach(child => child.classList.remove('bg-[#22D3EE]', 'text-slate-950', 'border-white/20'));
+                    btn.classList.add('bg-[#22D3EE]', 'text-slate-950', 'border-white/20');
+                };
+                grid.appendChild(btn);
+            }
+        }
+
+        document.getElementById('confirm-appointment-btn').onclick = () => {
+            playSuccessSound();
+            const time = document.getElementById('time-picker').value;
+            const message = `Hola Alexander, me gustaría agendar una asesoría técnica sobre software para el día: ${selectedDateStr} a las ${time}. ¿Es posible?`;
+            
+            showToast('Redirigiendo para confirmar agendamiento...');
+            setTimeout(() => {
+                window.open(`https://wa.me/573172327374?text=${encodeURIComponent(message)}`, '_blank');
+            }, 800);
+        };
+
+        function changeMonth(delta) { 
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta); 
+            renderCalendar(); 
+        }
+        
+        renderCalendar();
+    </script>
+</body>
+</html>
