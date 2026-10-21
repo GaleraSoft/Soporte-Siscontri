@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb"/>
+    <title>Galeras Software - Tarjeta Digital Corporativa</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 25px -5px rgba(37, 99, 235, 0.4)',
+                        'glow-lg': '0 0 35px -5px rgba(37, 99, 235, 0.6)',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Librería para generar el código QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes floatEffect {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .animated-border-glow {
+            position: relative;
+            padding: 3px;
+            overflow: hidden;
+            border-radius: 9999px;
+        }
+        .animated-border-glow::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            z-index: 0;
+            background: conic-gradient(from 180deg at 50% 50%, #2563eb 0deg, #60a5fa 120deg, #1d4ed8 240deg, #2563eb 360deg);
+            animation: rotateGlow 4s linear infinite;
+        }
+        .animated-border-glow > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .floating {
+            animation: floatEffect 4s ease-in-out infinite;
+        }
+
+        .modal-transition {
+            transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-800 min-h-screen flex items-center justify-center p-2 sm:p-6 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-950 via-slate-950 to-black selection:bg-brand-500 selection:text-white">
+
+    <div class="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden relative my-auto">
+        
+        <!-- Header Banner Corporativo -->
+        <div class="h-36 bg-gradient-to-r from-brand-950 via-brand-900 to-slate-900 relative overflow-hidden flex items-end justify-end p-4">
+            <div class="absolute -top-12 -left-12 w-40 h-40 bg-brand-500/20 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-400/20 rounded-full blur-xl"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(#60a5fa_1px,transparent_1px)] [background-size:16px_16px] opacity-15"></div>
+            
+            <div class="relative z-10 flex items-center gap-1.5 bg-brand-950/80 backdrop-blur-md px-3 py-1 rounded-full border border-brand-500/30 shadow-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-[11px] font-bold tracking-wide text-brand-300 uppercase">Sistema Verificado</span>
+            </div>
+        </div>
+
+        <header class="px-6 sm:px-8 pt-0 pb-4 text-center relative">
+            
+            <!-- Avatar y Logo Corporativo -->
+            <div class="relative -mt-16 mb-4 inline-block fade-in-up" style="animation-delay: 100ms;">
+                <div class="w-28 h-28 rounded-full animated-border-glow shadow-glow flex items-center justify-center bg-white p-1">
+                    <div class="w-full h-full rounded-full bg-gradient-to-br from-slate-950 via-brand-950 to-slate-900 flex flex-col items-center justify-center text-white font-extrabold tracking-wider shadow-inner border border-brand-500/30 px-1">
+                        <span class="text-xl font-black bg-gradient-to-r from-brand-300 via-white to-brand-400 bg-clip-text text-transparent leading-none">GALERAS</span>
+                        <span class="text-[8px] tracking-widest text-brand-300 uppercase font-bold mt-0.5">SOFTWARE</span>
+                    </div>
+                </div>
+                <span class="absolute bottom-1 right-1 bg-gradient-to-r from-brand-500 to-brand-600 p-1.5 rounded-full border-2 border-white text-white shadow-lg floating" title="Software Certificado">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                </span>
+            </div>
+
+            <!-- Título Principal y Subtítulo -->
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight fade-in-up" style="animation-delay: 150ms;">
+                Galeras Software
+            </h1>
+            <p class="text-brand-600 font-bold text-xs sm:text-sm tracking-wide uppercase mt-0.5 fade-in-up" style="animation-delay: 200ms;">
+                Gestión Contable, Financiera & Tributaria - SISCONTRI
+            </p>
+
+            <p class="text-slate-600 mt-3 text-xs sm:text-sm leading-relaxed max-w-xs mx-auto fade-in-up" style="animation-delay: 250ms;">
+                Plataforma integral especializada en facturación electrónica, cumplimiento DIAN, contabilidad automatizada y control tributario empresarial.
+            </p>
+
+            <!-- Métricas Rápidas Corporativas -->
+            <div class="grid grid-cols-3 gap-2 mt-5 p-2.5 bg-slate-50 rounded-2xl border border-slate-100/80 shadow-inner fade-in-up" style="animation-delay: 300ms;">
+                <div class="text-center p-1">
+                    <div class="text-lg font-extrabold text-slate-900">DIAN</div>
+                    <div class="text-[10px] font-medium text-slate-500 uppercase">Habilitado</div>
+                </div>
+                <div class="text-center p-1 border-x border-slate-200/80">
+                    <div class="text-lg font-extrabold text-brand-600">100%</div>
+                    <div class="text-[10px] font-medium text-slate-500 uppercase">En la Nube</div>
+                </div>
+                <div class="text-center p-1">
+                    <div class="text-lg font-extrabold text-slate-900">24/7</div>
+                    <div class="text-[10px] font-medium text-slate-500 uppercase">Soporte</div>
+                </div>
+            </div>
+        </header>
+
+        <section class="px-6 sm:px-8 pb-4 fade-in-up" style="animation-delay: 350ms;">
+             <div class="flex items-center justify-center gap-3">
+                 <a href="https://siscontri.com.co" target="_blank" rel="noopener noreferrer" title="Portal Web Oficial" class="p-3 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-brand-600 hover:text-white border border-slate-200/70 transition-all duration-300 hover:shadow-lg hover:shadow-brand-500/25 hover:-translate-y-0.5">
+                     <i data-lucide="globe" class="w-5 h-5"></i>
+                 </a>
+                 <a href="https://siscontri.com.co/login" target="_blank" rel="noopener noreferrer" title="Ingreso Portal Usuarios" class="p-3 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-slate-900 hover:text-white border border-slate-200/70 transition-all duration-300 hover:shadow-lg hover:shadow-slate-900/25 hover:-translate-y-0.5">
+                     <i data-lucide="log-in" class="w-5 h-5"></i>
+                 </a>
+                 <a href="https://wa.me/573172327374?text=Hola%20Galeras%20Software,%20solicito%20asesor%C3%ADa%20contable%20y%20tributaria." target="_blank" rel="noopener noreferrer" title="WhatsApp Corporativo" class="p-3 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-emerald-600 hover:text-white border border-slate-200/70 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-600/25 hover:-translate-y-0.5">
+                     <i data-lucide="message-circle" class="w-5 h-5"></i>
+                 </a>
+                 <a href="mailto:siscontripasto@gmail.com" title="Contacto por Correo" class="p-3 bg-slate-100/80 text-slate-700 rounded-xl hover:bg-brand-700 hover:text-white border border-slate-200/70 transition-all duration-300 hover:shadow-lg hover:shadow-brand-600/25 hover:-translate-y-0.5">
+                     <i data-lucide="mail" class="w-5 h-5"></i>
+                 </a>
+             </div>
+        </section>
+
+        <main class="px-6 sm:px-8 space-y-2.5 fade-in-up" style="animation-delay: 400ms;">
+            
+            <!-- Botón de Registro de 15 días gratis -->
+            <a href="https://siscontri.com.co/login" target="_blank" class="flex items-center p-3.5 bg-gradient-to-r from-emerald-500/15 via-brand-500/15 to-brand-600/15 hover:from-emerald-500/25 hover:to-brand-600/25 border-2 border-emerald-500/40 rounded-2xl transition-all duration-200 group shadow-md hover:shadow-emerald-500/20">
+                <div class="p-2.5 bg-gradient-to-br from-emerald-500 to-brand-600 text-white rounded-xl group-hover:scale-105 transition-transform duration-200 shadow-sm flex-shrink-0">
+                    <i data-lucide="gift" class="w-5 h-5 animate-bounce"></i>
+                </div>
+                <div class="ml-3 text-left overflow-hidden">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] font-black text-emerald-600 uppercase tracking-wider bg-emerald-100 px-2 py-0.5 rounded-full">Prueba Gratuita</span>
+                    </div>
+                    <p class="text-xs sm:text-sm font-extrabold text-slate-900 truncate mt-0.5">¡Regístrate y obtén 15 días gratis!</p>
+                </div>
+                <i data-lucide="arrow-right" class="w-4 h-4 ml-auto text-emerald-600 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
+            </a>
+
+            <!-- Botón para abrir el Formulario de Contacto Directo -->
+            <button id="open-client-form-btn" class="flex items-center w-full p-3.5 bg-gradient-to-r from-brand-600/10 to-brand-700/10 hover:from-brand-600/20 hover:to-brand-700/20 border-2 border-brand-500/40 rounded-2xl transition-all duration-200 group shadow-sm">
+                <div class="p-2.5 bg-brand-600 text-white rounded-xl group-hover:scale-105 transition-transform duration-200 shadow-sm flex-shrink-0">
+                    <i data-lucide="user-plus" class="w-5 h-5"></i>
+                </div>
+                <div class="ml-3 text-left overflow-hidden">
+                    <span class="text-[10px] font-bold text-brand-600 uppercase tracking-wider">Contacto Directo</span>
+                    <p class="text-xs sm:text-sm font-extrabold text-slate-900 truncate mt-0.5">Déjanos tus datos y te contactamos</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-brand-600 group-hover:translate-x-0.5 transition-transform flex-shrink-0"></i>
+            </button>
+
+            <a href="https://siscontri.com.co" target="_blank" class="flex items-center p-3 bg-slate-50/80 hover:bg-brand-50/80 border border-slate-200/70 hover:border-brand-300 rounded-2xl transition-all duration-200 group">
+                <div class="p-2 bg-brand-100/80 text-brand-700 rounded-xl group-hover:bg-brand-600 group-hover:text-white transition-colors duration-200">
+                    <i data-lucide="globe" class="w-4 h-4"></i>
+                </div>
+                <div class="ml-3.5 text-left overflow-hidden">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Sitio Web Oficial</p>
+                    <p class="text-xs sm:text-sm font-semibold text-slate-800 truncate">www.siscontri.com.co</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-slate-400 group-hover:text-brand-600 group-hover:translate-x-0.5 transition-all"></i>
+            </a>
+
+            <a href="mailto:siscontripasto@gmail.com" class="flex items-center p-3 bg-slate-50/80 hover:bg-brand-50/80 border border-slate-200/70 hover:border-brand-300 rounded-2xl transition-all duration-200 group">
+                <div class="p-2 bg-brand-100/80 text-brand-700 rounded-xl group-hover:bg-brand-600 group-hover:text-white transition-colors duration-200">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                </div>
+                <div class="ml-3.5 text-left overflow-hidden">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Soporte Corporativo</p>
+                    <p class="text-xs sm:text-sm font-semibold text-slate-800 truncate">siscontripasto@gmail.com</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-slate-400 group-hover:text-brand-600 group-hover:translate-x-0.5 transition-all"></i>
+            </a>
+
+            <a href="https://maps.google.com/?q=Pasto,+Nariño,+Colombia" target="_blank" class="flex items-center p-3 bg-slate-50/80 hover:bg-brand-50/80 border border-slate-200/70 hover:border-brand-300 rounded-2xl transition-all duration-200 group">
+                <div class="p-2 bg-brand-100/80 text-brand-700 rounded-xl group-hover:bg-brand-600 group-hover:text-white transition-colors duration-200">
+                    <i data-lucide="map-pin" class="w-4 h-4"></i>
+                </div>
+                <div class="ml-3.5 text-left overflow-hidden">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Ubicación Principal</p>
+                    <p class="text-xs sm:text-sm font-semibold text-slate-800 truncate">Pasto, Nariño, Colombia</p>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 ml-auto text-slate-400 group-hover:text-brand-600 group-hover:translate-x-0.5 transition-all"></i>
+            </a>
+
+        </main>
+
+        <footer class="p-6 sm:p-8 pt-6 flex flex-col gap-2.5 fade-in-up" style="animation-delay: 500ms;">
+            
+            <button id="services-btn" class="flex items-center justify-center w-full bg-slate-900 text-white font-bold py-3.5 px-5 rounded-2xl hover:bg-slate-800 active:scale-[0.98] transition-all duration-200 shadow-md shadow-slate-900/20 group">
+                <i data-lucide="layout-grid" class="w-4 h-4 mr-2.5 text-brand-400 group-hover:rotate-90 transition-transform duration-300"></i>
+                <span class="text-sm">Ecosistema & Módulos SISCONTRI</span>
+            </button>
+
+            <button id="save-contact-btn" class="flex items-center justify-center w-full bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold py-3.5 px-5 rounded-2xl hover:from-brand-700 hover:to-brand-600 active:scale-[0.98] transition-all duration-200 shadow-lg shadow-brand-500/30">
+                <i data-lucide="user-plus" class="w-4 h-4 mr-2.5"></i>
+                <span class="text-sm">Guardar Ficha Corporativa</span>
+            </button>
+
+            <button id="show-qr-btn" class="flex items-center justify-center w-full bg-slate-100 text-slate-700 font-bold py-3 px-5 rounded-2xl hover:bg-slate-200/80 hover:text-slate-900 active:scale-[0.98] transition-all duration-200 border border-slate-200/80">
+                 <i data-lucide="qr-code" class="w-4 h-4 mr-2.5 text-slate-600"></i>
+                 <span class="text-sm">Compartir con Código QR</span>
+            </button>
+
+            <button id="show-instructions-btn" class="text-center w-full text-slate-400 hover:text-brand-600 font-semibold text-xs pt-1 transition-colors flex items-center justify-center gap-1.5">
+                <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+                <span>¿Cómo instalar en mi pantalla de inicio?</span>
+            </button>
+        </footer>
+    </div>
+
+    <!-- Floating WhatsApp CTA -->
+    <div class="fixed bottom-5 right-5 z-40 flex items-center gap-3 group">
+        <div class="hidden sm:flex items-center bg-slate-900 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-xl border border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-ping"></span>
+            ¿Asesoría Galeras Software? ¡Escríbenos!
+        </div>
+        
+        <a href="https://wa.me/573172327374?text=Hola%20Galeras%20Software,%20solicito%20asesor%C3%ADa%20corporativa." 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           aria-label="Contactar por WhatsApp"
+           class="relative flex items-center justify-center w-14 h-14 bg-emerald-500 text-white rounded-full shadow-2xl hover:bg-emerald-600 hover:scale-110 active:scale-95 transition-all duration-300 group-hover:shadow-emerald-500/50">
+            <span class="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-40"></span>
+            <i data-lucide="message-circle" class="w-7 h-7 relative z-10"></i>
+        </a>
+    </div>
+
+    <!-- Modal Formulario de Datos del Cliente -->
+    <div id="client-form-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-50">
+        <div class="modal-transition bg-white rounded-3xl shadow-2xl max-w-md w-full relative scale-95 opacity-0 flex flex-col border border-slate-200/80 max-h-[90vh] overflow-hidden">
+            
+            <div class="p-5 sm:p-6 border-b border-slate-100 bg-slate-900 text-white relative flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full bg-brand-500/20 text-brand-300 text-[10px] font-bold uppercase tracking-wider border border-brand-500/30">Asesoría Personalizada</span>
+                </div>
+                <h2 class="text-xl font-black mt-1">Déjanos tus datos</h2>
+                <p class="text-slate-400 text-xs mt-0.5">Te contactaremos para ofrecerte la solución contable ideal.</p>
+                <button id="close-client-form-modal-btn" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-800 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="contact-lead-form" class="overflow-y-auto p-5 sm:p-6 space-y-4 bg-slate-50/50">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nombre Completo *</label>
+                    <input type="text" id="lead-name" required placeholder="Ej. Carlos Mendoza" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Empresa / Negocio *</label>
+                    <input type="text" id="lead-company" required placeholder="Ej. Comercializadora San José" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Teléfono / WhatsApp *</label>
+                        <input type="tel" id="lead-phone" required placeholder="Ej. 3001234567" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Correo Electrónico</label>
+                        <input type="email" id="lead-email" placeholder="correo@empresa.com" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Servicio de Interés</label>
+                    <select id="lead-interest" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all text-slate-700">
+                        <option value="Facturación Electrónica DIAN">Facturación Electrónica DIAN</option>
+                        <option value="Sistema SISCONTRI Completo">Sistema SISCONTRI Completo</option>
+                        <option value="Nómina Electrónica & Documento Soporte">Nómina Electrónica & Doc. Soporte</option>
+                        <option value="Asesoría Contable & Tributaria">Asesoría Contable & Tributaria</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Mensaje Adicional</label>
+                    <textarea id="lead-message" rows="2" placeholder="¿Tienes alguna pregunta específica?" class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 transition-all"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 text-sm mt-2">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    <span>Enviar Solicitud por WhatsApp</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Ecosistema y Módulos -->
+    <div id="services-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-50">
+        <div class="modal-transition bg-white rounded-3xl shadow-2xl max-w-lg w-full relative scale-95 opacity-0 flex flex-col border border-slate-200/80 max-h-[85vh] overflow-hidden">
+            
+            <div class="p-5 sm:p-6 border-b border-slate-100 bg-slate-900 text-white relative flex-shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full bg-brand-500/20 text-brand-300 text-[10px] font-bold uppercase tracking-wider border border-brand-500/30">Módulos SISCONTRI</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-black mt-1">Ecosistema Contable & Tributario</h2>
+                <p class="text-slate-400 text-xs sm:text-sm mt-0.5">Soluciones especializadas para la gestión operativa y tributaria.</p>
+                <button id="close-services-modal-btn" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-full hover:bg-slate-800 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="overflow-y-auto p-5 sm:p-6 space-y-4 bg-slate-50/50">
+                
+                <a href="https://siscontri.com.co/login" target="_blank" class="block bg-gradient-to-r from-emerald-600 via-brand-600 to-slate-900 p-4 rounded-2xl text-white border border-emerald-400/40 hover:border-emerald-300 transition-all shadow-md group">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-emerald-500/20 text-emerald-300 rounded-xl border border-emerald-400/30">
+                                <i data-lucide="gift" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Prueba Gratuita 15 Días</h4>
+                                <p class="text-[11px] text-emerald-100">Prueba todas las funcionalidades sin costo inicial.</p>
+                            </div>
+                        </div>
+                        <i data-lucide="arrow-up-right" class="w-5 h-5 text-emerald-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                    </div>
+                </a>
+
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-blue-50 text-brand-600 rounded-2xl flex-shrink-0 border border-blue-100">
+                            <i data-lucide="file-check" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-bold text-slate-900 text-sm sm:text-base">Facturación & Nómina DIAN</h3>
+                                <span class="px-2 py-0.5 bg-brand-100 text-brand-700 text-[10px] font-extrabold rounded-full uppercase tracking-wider">Certificado</span>
+                            </div>
+                            <p class="text-slate-600 text-xs mt-1 leading-relaxed">Emisión de facturas electrónicas, notas crédito/débito, documentos de soporte y nómina electrónica conforme a la regulación DIAN vigente.</p>
+                            <div class="flex flex-wrap gap-1.5 mt-2.5">
+                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-semibold">Facturación Electrónica</span>
+                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-semibold">Nómina DIAN</span>
+                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-semibold">Doc. Soporte</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-brand-50 text-brand-600 rounded-2xl flex-shrink-0 border border-brand-100">
+                            <i data-lucide="calculator" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base">Contabilidad Automatizada</h3>
+                            <p class="text-slate-600 text-xs mt-1 leading-relaxed">Asientos contables automáticos, balances generales, estados de resultados y libro mayor listos en tiempo real.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-2xl flex-shrink-0 border border-emerald-100">
+                            <i data-lucide="pie-chart" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm sm:text-base">Módulo Tributario & Reportes</h3>
+                            <p class="text-slate-600 text-xs mt-1 leading-relaxed">Cálculo automatizado de retenciones, IVA, ICA e informes exógenos para la DIAN de manera rápida y segura.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-4 sm:p-5 border-t border-slate-200 bg-white flex-shrink-0">
+                 <a href="https://siscontri.com.co" target="_blank" class="w-full flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-md shadow-brand-600/20 text-sm">
+                     <i data-lucide="rocket" class="w-4 h-4 mr-2"></i>Visitar Galeras Software
+                 </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Código QR -->
+    <div id="qr-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+        <div class="modal-transition bg-white rounded-3xl shadow-2xl max-w-xs w-full relative text-center overflow-hidden border border-slate-200">
+            
+            <div class="bg-gradient-to-r from-brand-950 to-slate-900 p-5 text-white relative">
+                <h3 class="text-lg font-bold">Tarjeta Digital Galeras Software</h3>
+                <p class="text-slate-300 text-xs mt-0.5">Escanear para acceder en el teléfono</p>
+                <button id="close-qr-modal-btn" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <div id="qrcode-container" class="flex justify-center p-4 bg-white rounded-2xl border border-slate-200 shadow-inner my-2">
+                    <div id="qrcode"></div>
+                </div>
+                <p class="text-slate-500 mt-3 text-xs leading-relaxed">Apunta la cámara de tu móvil para guardar o compartir la tarjeta corporativa.</p>
+                
+                <button id="native-share-btn" class="mt-5 w-full flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-md shadow-brand-600/25 text-xs">
+                    <i data-lucide="share-2" class="w-4 h-4 mr-2"></i>Compartir por Enlace
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Instrucciones PWA -->
+    <div id="install-instructions-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+        <div class="modal-transition bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden border border-slate-200">
+             <div class="bg-slate-900 p-5 text-white relative">
+                 <h3 class="text-lg font-bold">Instalar como App (PWA)</h3>
+                 <p class="text-slate-400 text-xs mt-0.5">Accede directo desde el menú de tu teléfono</p>
+                 <button id="close-instructions-modal-btn" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                     <i data-lucide="x" class="w-5 h-5"></i>
+                 </button>
+             </div>
+             
+             <div class="p-6 space-y-4">
+                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-left">
+                     <div class="flex items-center gap-2 font-bold text-slate-900 text-sm mb-2">
+                         <i data-lucide="apple" class="w-4 h-4 text-slate-700"></i> Dispositivos iOS (Safari)
+                     </div>
+                     <ol class="text-xs text-slate-600 space-y-1.5 pl-5 list-decimal">
+                         <li>Toca el botón <strong>Compartir</strong> en la barra inferior.</li>
+                         <li>Selecciona <strong>"Añadir a pantalla de inicio"</strong>.</li>
+                         <li>Toca <strong>Añadir</strong> en la esquina superior derecha.</li>
+                     </ol>
+                 </div>
+
+                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-left">
+                     <div class="flex items-center gap-2 font-bold text-slate-900 text-sm mb-2">
+                         <i data-lucide="smartphone" class="w-4 h-4 text-brand-600"></i> Dispositivos Android (Chrome)
+                     </div>
+                     <ol class="text-xs text-slate-600 space-y-1.5 pl-5 list-decimal">
+                         <li>Toca los <strong>tres puntos superiores</strong> del navegador.</li>
+                         <li>Selecciona <strong>"Añadir a pantalla de inicio"</strong> o <strong>"Instalar aplicación"</strong>.</li>
+                         <li>Confirma la acción.</li>
+                     </ol>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar Lucide Icons
+            lucide.createIcons();
+
+            // Configuración dinámica PWA
+            const manifest = {
+                "name": "Galeras Software - Tarjeta Corporativa Digital",
+                "short_name": "Galeras Software",
+                "start_url": window.location.href,
+                "display": "standalone",
+                "background_color": "#0f172a",
+                "theme_color": "#2563eb",
+                "description": "Tarjeta Digital Corporativa y Plataforma SISCONTRI.",
+                "icons": [
+                    { "src": "https://placehold.co/192x192/2563eb/FFFFFF?text=GS", "sizes": "192x192", "type": "image/png" },
+                    { "src": "https://placehold.co/512x512/2563eb/FFFFFF?text=GS", "sizes": "512x512", "type": "image/png" }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+            const linkManifest = document.createElement('link');
+            linkManifest.rel = 'manifest';
+            linkManifest.href = URL.createObjectURL(manifestBlob);
+            document.head.appendChild(linkManifest);
+
+            const setupModal = (modalId, openBtnId, closeBtnId) => {
+                const modal = document.getElementById(modalId);
+                const openBtn = document.getElementById(openBtnId);
+                const closeBtn = modal ? modal.querySelector(closeBtnId) : null;
+                const modalContent = modal ? modal.querySelector('.modal-transition') : null;
+
+                if (!modal || !openBtn) return;
+
+                const openModal = () => {
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        if (modalContent) {
+                            modalContent.classList.remove('scale-95', 'opacity-0');
+                            modalContent.classList.add('scale-100', 'opacity-100');
+                        }
+                    }, 10);
+                };
+
+                const closeModal = () => {
+                    if (modalContent) {
+                        modalContent.classList.remove('scale-100', 'opacity-100');
+                        modalContent.classList.add('scale-95', 'opacity-0');
+                    }
+                    setTimeout(() => modal.classList.add('hidden'), 250);
+                };
+
+                openBtn.addEventListener('click', openModal);
+                if (closeBtn) closeBtn.addEventListener('click', closeModal);
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+            };
+
+            // Setup de modales
+            setupModal('services-modal', 'services-btn', '#close-services-modal-btn');
+            setupModal('qr-modal', 'show-qr-btn', '#close-qr-modal-btn');
+            setupModal('install-instructions-modal', 'show-instructions-btn', '#close-instructions-modal-btn');
+            setupModal('client-form-modal', 'open-client-form-btn', '#close-client-form-modal-btn');
+
+            // Formulario Lead -> Envío a WhatsApp
+            const contactLeadForm = document.getElementById('contact-lead-form');
+            if (contactLeadForm) {
+                contactLeadForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('lead-name').value;
+                    const company = document.getElementById('lead-company').value;
+                    const phone = document.getElementById('lead-phone').value;
+                    const email = document.getElementById('lead-email').value;
+                    const interest = document.getElementById('lead-interest').value;
+                    const message = document.getElementById('lead-message').value;
+
+                    let waText = `*Solicitud de Asesoría - Galeras Software*%0A%0A`;
+                    waText += `*Nombre:* ${encodeURIComponent(name)}%0A`;
+                    waText += `*Empresa:* ${encodeURIComponent(company)}%0A`;
+                    waText += `*Teléfono:* ${encodeURIComponent(phone)}%0A`;
+                    if (email) waText += `*Correo:* ${encodeURIComponent(email)}%0A`;
+                    waText += `*Interés:* ${encodeURIComponent(interest)}%0A`;
+                    if (message) waText += `*Mensaje:* ${encodeURIComponent(message)}%0A`;
+
+                    window.open(`https://wa.me/573172327374?text=${waText}`, '_blank');
+                });
+            }
+
+            const qrContainer = document.getElementById("qrcode");
+            if (qrContainer) {
+                qrContainer.innerHTML = "";
+                new QRCode(qrContainer, {
+                    text: window.location.href,
+                    width: 180,
+                    height: 180,
+                    colorDark: "#0f172a",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            }
+
+            // Lógica de Compartir Nativo
+            const nativeShareBtn = document.getElementById('native-share-btn');
+            if (nativeShareBtn) {
+                if (navigator.share) {
+                    nativeShareBtn.addEventListener('click', async () => {
+                        try {
+                            await navigator.share({
+                                title: 'Galeras Software - Tarjeta Digital Corporativa',
+                                text: 'Accede a la tarjeta corporativa y soluciones contables de Galeras Software - SISCONTRI.',
+                                url: window.location.href,
+                            });
+                        } catch (err) {
+                            console.log("Compartido cancelado o no soportado:", err);
+                        }
+                    });
+                } else {
+                    nativeShareBtn.addEventListener('click', () => {
+                        const dummy = document.createElement('input');
+                        document.body.appendChild(dummy);
+                        dummy.value = window.location.href;
+                        dummy.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(dummy);
+                        
+                        nativeShareBtn.innerText = "¡Enlace Copiado al Portapapeles!";
+                        setTimeout(() => {
+                            nativeShareBtn.innerHTML = `<i data-lucide="share-2" class="w-4 h-4 mr-2"></i>Compartir por Enlace`;
+                            lucide.createIcons();
+                        }, 2500);
+                    });
+                }
+            }
+
+            const saveContactBtn = document.getElementById('save-contact-btn');
+            if (saveContactBtn) {
+                saveContactBtn.addEventListener('click', () => {
+                    const vCardData = 
+`BEGIN:VCARD
+VERSION:3.0
+FN:Galeras Software - Soluciones Contables y Tributarias (SISCONTRI)
+ORG:Galeras Software S.A.S.
+TITLE:Sistema Contable, Financiero y Facturación DIAN
+URL;TYPE=WORK:https://siscontri.com.co
+EMAIL;TYPE=PREF,INTERNET:siscontripasto@gmail.com
+TEL;TYPE=WORK,VOICE:+573172327374
+ADR;TYPE=WORK:;;Pasto;Nariño;;;Colombia
+NOTE:Plataforma especializada en facturación electrónica y gestión tributaria.
+END:VCARD`;
+
+                    const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'Contacto_Galeras_Software.vcf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
